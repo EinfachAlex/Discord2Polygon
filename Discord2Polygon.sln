@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord2Polygon", "Discord2Polygon\Discord2Polygon.csproj", "{718B62C6-B03D-4DD2-B64B-DAC9F99C755A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EinfachAlex.Utils", "EinfachAlexUtils\EinfachAlex.Utils.csproj", "{2730E7C7-0AB9-4845-AD03-287ECECC93C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord2Polygon.Example", "Discord2Polygon.Example\Discord2Polygon.Example.csproj", "{E225DAB6-68B8-4041-86BF-AFE53DE06A80}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{718B62C6-B03D-4DD2-B64B-DAC9F99C755A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{718B62C6-B03D-4DD2-B64B-DAC9F99C755A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{718B62C6-B03D-4DD2-B64B-DAC9F99C755A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{718B62C6-B03D-4DD2-B64B-DAC9F99C755A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2730E7C7-0AB9-4845-AD03-287ECECC93C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2730E7C7-0AB9-4845-AD03-287ECECC93C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2730E7C7-0AB9-4845-AD03-287ECECC93C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2730E7C7-0AB9-4845-AD03-287ECECC93C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E225DAB6-68B8-4041-86BF-AFE53DE06A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E225DAB6-68B8-4041-86BF-AFE53DE06A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E225DAB6-68B8-4041-86BF-AFE53DE06A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E225DAB6-68B8-4041-86BF-AFE53DE06A80}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
