@@ -64,5 +64,35 @@ public class Discord2Polygon : IDiscord2Polygon
         
         return account;
     }
+
+    public async Task<TransactionReceipt> sendToPolygon(SendToPolygonDTO sendToPolygonDTO)
+    {
+        HexBigInteger estimatedGasLimit = await estimateGas(sendToPolygonDTO);
+        
+        sendToPolygonDTO.Gas = estimatedGasLimit;
+        
+        return await sendTransactionToBlockchain(sendToPolygonDTO);
+    }
+    
+    private async Task<HexBigInteger> estimateGas(SendToPolygonDTO sendToPolygonDTO)
+    {
+        Logger.i("Estimating gas...");
+
+        HexBigInteger estimateGas = await this.sendToPolygonContractMethod.EstimateGasAsync(this.contractInfo.address, sendToPolygonDTO);
+
+        Logger.v($"=> estimated {estimateGas} gas");
+        
+        return estimateGas;
+    }
+
+    private async Task<TransactionReceipt> sendTransactionToBlockchain(SendToPolygonDTO receiveFromPolygonDto)
+    {
+        Logger.i("Creating transaction...");
+        
+        TransactionReceipt transaction = await this.sendToPolygonContractMethod.SendRequestAndWaitForReceiptAsync(this.contractInfo.address, receiveFromPolygonDto);
+
+        Logger.i($"=> Sent transaction {transaction.TransactionHash}");
+
+        return transaction;
     }
 }
