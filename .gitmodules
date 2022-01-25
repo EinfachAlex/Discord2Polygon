@@ -1,0 +1,3 @@
+[submodule "EinfachAlexUtils"]
+	path = EinfachAlexUtils
+	url = http://192.168.178.51:8030/einfachalex/EinfachAlexUtils
