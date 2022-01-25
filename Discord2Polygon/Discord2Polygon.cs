@@ -27,5 +27,42 @@ public class Discord2Polygon : IDiscord2Polygon
         this.chainID = chainID;
         this.web3URL = web3URL;
         this.contractInfo = contractInfo;
+
+        init();
+    }
+
+    private void init()
+    {
+        this.account = loginWithPrivateKey();
+
+        this.web3 = connectToWeb3(this.account, this.web3URL);
+        
+        //this.receiveFromPolygonContractMethod = web3.Eth.GetContractTransactionHandler<ReceiveFromPolygonDTO>();
+        this.sendToPolygonContractMethod = web3.Eth.GetContractTransactionHandler<SendToPolygonDTO>();
+    }
+
+    private Web3 connectToWeb3(Account account, string web3URL)
+    {
+        Logger.i($"Connecting to web3 - URL {web3URL}");
+        
+        Web3 web3 = new Web3(account, web3URL);
+
+        Logger.i("Connected to Web3!");
+
+        web3.TransactionManager.UseLegacyAsDefault = true;
+
+        return web3;
+    }
+
+    private Account loginWithPrivateKey()
+    {
+        Logger.i($"Logging in to chainID {chainID}");
+
+        Account account = new Account(this.privateKey, this.chainID);
+        
+        Logger.v($"=> Using ETH-Address {account.Address}");
+        
+        return account;
+    }
     }
 }
