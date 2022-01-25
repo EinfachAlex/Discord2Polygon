@@ -18,4 +18,14 @@ public class Discord2Polygon : IDiscord2Polygon
     private Account account;
     private IContractTransactionHandler<ReceiveFromPolygonDTO> receiveFromPolygonContractMethod;
     private IContractTransactionHandler<SendToPolygonDTO> sendToPolygonContractMethod;
+
+    private readonly ContractInfo contractInfo;
+
+    public Discord2Polygon(string privateKey, int chainID, string web3URL, ContractInfo contractInfo)
+    {
+        this.privateKey = privateKey;
+        this.chainID = chainID;
+        this.web3URL = web3URL;
+        this.contractInfo = contractInfo;
+    }
 }
