@@ -1,4 +1,5 @@
-﻿using EinfachAlex.Utils.Logging;
+﻿using System.Numerics;
+using EinfachAlex.Utils.Logging;
 using Nethereum.Contracts;
 using Nethereum.Contracts.ContractHandlers;
 using Nethereum.Hex.HexTypes;
@@ -95,4 +96,29 @@ public class Discord2Polygon : IDiscord2Polygon
 
         return transaction;
     }
+
+    public async Task checkForNewEvents(BigInteger sinceBlock)
+    {
+        Logger.i($"Checking for events after block {sinceBlock}");
+        
+        Contract contract = web3.Eth.GetContract(this.contractInfo.abi, this.contractInfo.address);
+
+        Event? multiplyEvent = contract.GetEvent("receiveFromPolygonEvent");
+        HexBigInteger? filterAll = await multiplyEvent.CreateFilterAsync(new BlockParameter((ulong)sinceBlock + 1));
+        
+        List<EventLog<ReceiveFromPolygonDTO>> allChangesAsync = await multiplyEvent.GetAllChangesAsync<ReceiveFromPolygonDTO>(filterAll);
+        
+        Logger.i($"Found {allChangesAsync.Count} new events!");
+        
+        foreach (EventLog<ReceiveFromPolygonDTO> eventLog in allChangesAsync)
+        {
+            EventHandler<ReceiveFromPolygonDTO> eventHandler = receiveFromPolygon;
+            eventHandler?.Invoke(this, eventLog.Event);
+        }
+    }
+    
+    public Task<HexBigInteger> latestBlockNumber => web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+
+
+    public event EventHandler<ReceiveFromPolygonDTO> receiveFromPolygon;
 }
