@@ -3,6 +3,8 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-/Discord2Polygon.Example/node_modules/
-/Discord2Polygon.Example/build/
+/Discord2Polygon.Example/Polygon/node_modules/
+/Discord2Polygon.Example/Polygon/build/
 /build
+/.idea
+/Discord2Polygon.Example.Bot/Config.cs
