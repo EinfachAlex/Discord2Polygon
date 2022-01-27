@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord2Polygon.Example", "
 		{718B62C6-B03D-4DD2-B64B-DAC9F99C755A} = {718B62C6-B03D-4DD2-B64B-DAC9F99C755A}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord2Polygon.Example.Bot", "Discord2Polygon.Example.Bot\Discord2Polygon.Example.Bot.csproj", "{2C62F1C5-9FE5-4CF9-B27C-B193D2ACCA0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,5 +30,9 @@ Global
 		{44AB588D-928A-4021-90D7-64C45D31464A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44AB588D-928A-4021-90D7-64C45D31464A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44AB588D-928A-4021-90D7-64C45D31464A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C62F1C5-9FE5-4CF9-B27C-B193D2ACCA0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C62F1C5-9FE5-4CF9-B27C-B193D2ACCA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C62F1C5-9FE5-4CF9-B27C-B193D2ACCA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C62F1C5-9FE5-4CF9-B27C-B193D2ACCA0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
