@@ -106,11 +106,11 @@ public class Discord2Polygon : IDiscord2Polygon
         Event? multiplyEvent = contract.GetEvent("receiveFromPolygonEvent");
         HexBigInteger? filterAll = await multiplyEvent.CreateFilterAsync(new BlockParameter((ulong)sinceBlock + 1));
         
-        List<EventLog<ReceiveFromPolygonDTO>> allChangesAsync = await multiplyEvent.GetAllChangesAsync<ReceiveFromPolygonDTO>(filterAll);
+        List<EventLog<ReceiveFromPolygonDTO>> eventLogs = await multiplyEvent.GetAllChangesAsync<ReceiveFromPolygonDTO>(filterAll);
         
-        Logger.i($"Found {allChangesAsync.Count} new events!");
+        Logger.i($"Found {eventLogs.Count} new events!");
         
-        foreach (EventLog<ReceiveFromPolygonDTO> eventLog in allChangesAsync)
+        foreach (EventLog<ReceiveFromPolygonDTO> eventLog in eventLogs)
         {
             EventHandler<ReceiveFromPolygonDTO> eventHandler = receiveFromPolygon;
             eventHandler?.Invoke(this, eventLog.Event);
