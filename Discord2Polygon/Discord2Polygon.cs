@@ -97,16 +97,19 @@ public class Discord2Polygon : IDiscord2Polygon
         return transaction;
     }
 
+    private Contract? contract;
+    private Event? receiveFromPolygonEvent;
     public async Task checkForNewEvents(BigInteger sinceBlock)
     {
         Logger.i($"Checking for events after block {sinceBlock}");
-        
-        Contract contract = web3.Eth.GetContract(this.contractInfo.abi, this.contractInfo.address);
 
-        Event? multiplyEvent = contract.GetEvent("receiveFromPolygonEvent");
-        HexBigInteger? filterAll = await multiplyEvent.CreateFilterAsync(new BlockParameter((ulong)sinceBlock + 1));
+        contract ??= web3.Eth.GetContract(this.contractInfo.abi, this.contractInfo.address);
+
+        receiveFromPolygonEvent ??= contract.GetEvent("receiveFromPolygonEvent");
         
-        List<EventLog<ReceiveFromPolygonDTO>> eventLogs = await multiplyEvent.GetAllChangesAsync<ReceiveFromPolygonDTO>(filterAll);
+        HexBigInteger? filterAll = await receiveFromPolygonEvent.CreateFilterAsync(new BlockParameter((ulong)sinceBlock + 1));
+        
+        List<EventLog<ReceiveFromPolygonDTO>> eventLogs = await receiveFromPolygonEvent.GetAllChangesAsync<ReceiveFromPolygonDTO>(filterAll);
         
         Logger.i($"Found {eventLogs.Count} new events!");
         
