@@ -8,3 +8,4 @@ riderModule.iml
 /build
 /.idea
 /Discord2Polygon.Example.Bot/Config.cs
+/Discord2Polygon.REST/config.json
