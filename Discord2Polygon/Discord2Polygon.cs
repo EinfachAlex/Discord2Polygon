@@ -4,6 +4,7 @@ using Nethereum.Contracts;
 using Nethereum.Contracts.ContractHandlers;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
+using Nethereum.Util;
 using Nethereum.Web3;
 using Account = Nethereum.Web3.Accounts.Account;
 
@@ -37,7 +38,7 @@ public class Discord2Polygon : IDiscord2Polygon
         this.account = loginWithPrivateKey();
 
         this.web3 = connectToWeb3(this.account, this.web3URL);
-        
+
         //this.receiveFromPolygonContractMethod = web3.Eth.GetContractTransactionHandler<ReceiveFromPolygonDTO>();
         this.sendToPolygonContractMethod = web3.Eth.GetContractTransactionHandler<SendToPolygonDTO>();
     }
@@ -45,7 +46,7 @@ public class Discord2Polygon : IDiscord2Polygon
     private Web3 connectToWeb3(Account account, string web3URL)
     {
         Logger.i($"Connecting to web3 - URL {web3URL}");
-        
+
         Web3 web3 = new Web3(account, web3URL);
 
         Logger.i("Connected to Web3!");
@@ -60,21 +61,23 @@ public class Discord2Polygon : IDiscord2Polygon
         Logger.i($"Logging in to chainID {chainID}");
 
         Account account = new Account(this.privateKey, this.chainID);
-        
+
         Logger.v($"=> Using ETH-Address {account.Address}");
-        
+
         return account;
     }
 
     public async Task<TransactionReceipt> sendToPolygon(SendToPolygonDTO sendToPolygonDTO)
     {
+        if (!AddressUtil.Current.IsValidEthereumAddressHexFormat(sendToPolygonDTO.addressOfDiscordUser)) throw new Exception("Address is not valid");
+
         HexBigInteger estimatedGasLimit = await estimateGas(sendToPolygonDTO);
-        
+
         sendToPolygonDTO.Gas = estimatedGasLimit;
-        
+
         return await sendTransactionToBlockchain(sendToPolygonDTO);
     }
-    
+
     private async Task<HexBigInteger> estimateGas(SendToPolygonDTO sendToPolygonDTO)
     {
         Logger.i("Estimating gas...");
@@ -82,14 +85,14 @@ public class Discord2Polygon : IDiscord2Polygon
         HexBigInteger estimateGas = await this.sendToPolygonContractMethod.EstimateGasAsync(this.contractInfo.address, sendToPolygonDTO);
 
         Logger.v($"=> estimated {estimateGas} gas");
-        
+
         return estimateGas;
     }
 
     private async Task<TransactionReceipt> sendTransactionToBlockchain(SendToPolygonDTO receiveFromPolygonDto)
     {
         Logger.i("Creating transaction...");
-        
+
         TransactionReceipt transaction = await this.sendToPolygonContractMethod.SendRequestAndWaitForReceiptAsync(this.contractInfo.address, receiveFromPolygonDto);
 
         Logger.i($"=> Sent transaction {transaction.TransactionHash}");
@@ -99,6 +102,7 @@ public class Discord2Polygon : IDiscord2Polygon
 
     private Contract? contract;
     private Event? receiveFromPolygonEvent;
+
     public async Task checkForNewEvents(BigInteger sinceBlock)
     {
         Logger.i($"Checking for events after block {sinceBlock}");
@@ -106,20 +110,20 @@ public class Discord2Polygon : IDiscord2Polygon
         contract ??= web3.Eth.GetContract(this.contractInfo.abi, this.contractInfo.address);
 
         receiveFromPolygonEvent ??= contract.GetEvent("receiveFromPolygonEvent");
-        
+
         HexBigInteger? filterAll = await receiveFromPolygonEvent.CreateFilterAsync(new BlockParameter((ulong)sinceBlock + 1));
-        
+
         List<EventLog<ReceiveFromPolygonDTO>> eventLogs = await receiveFromPolygonEvent.GetAllChangesAsync<ReceiveFromPolygonDTO>(filterAll);
-        
+
         Logger.i($"Found {eventLogs.Count} new events!");
-        
+
         foreach (EventLog<ReceiveFromPolygonDTO> eventLog in eventLogs)
         {
             EventHandler<ReceiveFromPolygonDTO> eventHandler = receiveFromPolygon;
             eventHandler?.Invoke(this, eventLog.Event);
         }
     }
-    
+
     public Task<HexBigInteger> latestBlockNumber => web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 
 
