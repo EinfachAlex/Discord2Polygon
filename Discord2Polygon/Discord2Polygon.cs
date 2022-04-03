@@ -74,6 +74,7 @@ public class Discord2Polygon : IDiscord2Polygon
         HexBigInteger estimatedGasLimit = await estimateGas(sendToPolygonDTO);
 
         sendToPolygonDTO.Gas = estimatedGasLimit;
+        sendToPolygonDTO.SetGasPriceFromGwei(31);
 
         return await sendTransactionToBlockchain(sendToPolygonDTO);
     }
